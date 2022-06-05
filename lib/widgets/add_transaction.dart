@@ -43,61 +43,68 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Card(
-        elevation: 5,
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Title'),
-                controller: titleController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter title of Expense';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Amount'),
-                controller: amountController,
-                validator: (value) {
-                  if (double.tryParse(value.toString()) == null) {
-                    return 'Please Enter valid amount';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 70,
-                child: Row(
-                  children: [
-                    Text(formatDate()),
-                    TextButton(
-                      onPressed: _presentDatePicker,
-                      child: const Text('Choose Date'),
-                      style: TextButton.styleFrom(
-                          textStyle: const TextStyle(
-                              color: Colors.purple,
-                              fontWeight: FontWeight.bold)),
-                    )
-                  ],
-                ),
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      clickHandler(titleController.text,
-                          double.tryParse(amountController.text) ?? 0.0, _selectdate);
-                      Navigator.of(context).pop();
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Card(
+          elevation: 5,
+          child: Container(
+            padding: const EdgeInsets.only(
+              top: 10,
+              left: 10,
+              right: 10,
+              // bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Title'),
+                  controller: titleController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter title of Expense';
                     }
+                    return null;
                   },
-                  child: const Text("Add Transaction"))
-            ],
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Amount'),
+                  controller: amountController,
+                  validator: (value) {
+                    if (double.tryParse(value.toString()) == null) {
+                      return 'Please Enter valid amount';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(
+                  height: 70,
+                  child: Row(
+                    children: [
+                      Text(formatDate()),
+                      TextButton(
+                        onPressed: _presentDatePicker,
+                        child: const Text('Choose Date'),
+                        style: TextButton.styleFrom(
+                            textStyle: const TextStyle(
+                                color: Colors.purple,
+                                fontWeight: FontWeight.bold)),
+                      )
+                    ],
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        clickHandler(titleController.text,
+                            double.tryParse(amountController.text) ?? 0.0, _selectdate);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: const Text("Add Transaction"))
+              ],
+            ),
           ),
         ),
       ),

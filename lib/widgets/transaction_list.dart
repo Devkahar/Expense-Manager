@@ -10,6 +10,7 @@ class TransactionList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return transList.isEmpty
         ? Column(
             children: [
@@ -26,31 +27,34 @@ class TransactionList extends StatelessWidget {
                   )),
             ],
           )
-        : ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (ctx, index) {
-              return Card(
-                margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    child: Padding(
-                      padding: const EdgeInsets.all(6),
-                      child: FittedBox(child : Text('${transList[index].amount.toStringAsFixed(0)}Rs',)),
+        : Container(
+          height: mediaQuery.size.height,
+          child: ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (ctx, index) {
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(6),
+                        child: FittedBox(child : Text('${transList[index].amount.toStringAsFixed(0)}Rs',)),
+                      ),
                     ),
+                    title: Text(
+                      transList[index].title,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    subtitle: Text(
+                      DateFormat.yMMMd().format(transList[index].date),
+                    ),
+                    trailing: mediaQuery.size.width >500? ElevatedButton.icon(onPressed: () => deleteTransaction(transList[index].id), icon: const Icon(Icons.delete), label: const Text('Delete Item')):IconButton(icon: const Icon(Icons.delete), onPressed: () => deleteTransaction(transList[index].id),color: Theme.of(context).errorColor,),
                   ),
-                  title: Text(
-                    transList[index].title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  subtitle: Text(
-                    DateFormat.yMMMd().format(transList[index].date),
-                  ),
-                  trailing: IconButton(icon: const Icon(Icons.delete), onPressed: () => deleteTransaction(transList[index].id),color: Theme.of(context).errorColor,),
-                ),
-              );
-            },
-            itemCount: transList.length,
-          );
+                );
+              },
+              itemCount: transList.length,
+            ),
+        );
   }
 }
